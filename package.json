@@ -1,8 +1,8 @@
 {
-  "name": "tycoon-library",
-  "version": "1.0.0",
+  "name": "@rbxts/tycoon-framework",
+  "version": "1.0.8",
   "description": "",
-  "main": "index.js",
+  "main": "out/init.lua",
   "scripts": {
     "build": "rbxtsc",
     "watch": "rbxtsc -w",
@@ -12,12 +12,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "src/index.d.ts",
+  "types": "out/index.d.ts",
   "files": [
-    "src",
+    "out",
     "!**/*.tsbuildinfo",
     "!**/*.spec.lua"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@rbxts/compiler-types": "^2.2.0-types.0",
     "@rbxts/types": "^1.0.744",
@@ -35,6 +38,7 @@
     "@rbxts/beacon": "^2.1.1",
     "@rbxts/immut": "^0.4.4-ts.0",
     "@rbxts/maid": "^1.1.0",
+    "@rbxts/profileservice": "^1.4.2",
     "@rbxts/services": "^1.5.1"
   }
 }

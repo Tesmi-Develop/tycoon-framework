@@ -14,19 +14,19 @@ local getAttribute = function(model, name, typeValue, defaultValue)
 	logAssert(typeof(value) == _typeValue, "Attribute " .. (name .. (" must be of type " .. typeValue)))
 	return value
 end
-local TycoonItemCommunication
+local TycoonComponentCommunication
 do
-	TycoonItemCommunication = setmetatable({}, {
+	TycoonComponentCommunication = setmetatable({}, {
 		__tostring = function()
-			return "TycoonItemCommunication"
+			return "TycoonComponentCommunication"
 		end,
 	})
-	TycoonItemCommunication.__index = TycoonItemCommunication
-	function TycoonItemCommunication.new(...)
-		local self = setmetatable({}, TycoonItemCommunication)
+	TycoonComponentCommunication.__index = TycoonComponentCommunication
+	function TycoonComponentCommunication.new(...)
+		local self = setmetatable({}, TycoonComponentCommunication)
 		return self:constructor(...) or self
 	end
-	function TycoonItemCommunication:constructor(setData, maid, itemStorage)
+	function TycoonComponentCommunication:constructor(setData, maid, itemStorage)
 		self.setDataCallback = setData
 		self.maid = maid
 		self.itemStorage = itemStorage
@@ -44,19 +44,19 @@ local function TycoonComponent(tag)
 		TycoonComponentsByTag[_tag] = _component_1
 	end
 end
-local TycoonBaseItem
+local TycoonBaseComponent
 do
-	TycoonBaseItem = setmetatable({}, {
+	TycoonBaseComponent = setmetatable({}, {
 		__tostring = function()
-			return "TycoonBaseItem"
+			return "TycoonBaseComponent"
 		end,
 	})
-	TycoonBaseItem.__index = TycoonBaseItem
-	function TycoonBaseItem.new(...)
-		local self = setmetatable({}, TycoonBaseItem)
+	TycoonBaseComponent.__index = TycoonBaseComponent
+	function TycoonBaseComponent.new(...)
+		local self = setmetatable({}, TycoonBaseComponent)
 		return self:constructor(...) or self
 	end
-	function TycoonBaseItem:constructor(instance, tycoon, communication)
+	function TycoonBaseComponent:constructor(instance, tycoon, communication)
 		logAssert(instance.Parent, "Item " .. (instance.Name .. " has no parent"))
 		self.instance = instance
 		self.tycoon = tycoon
@@ -66,19 +66,19 @@ do
 		self.defaultParent = instance.Parent
 		self.itemStorage = communication.itemStorage
 	end
-	function TycoonBaseItem:generateCustomData()
+	function TycoonBaseComponent:generateCustomData()
 		return {}
 	end
-	function TycoonBaseItem:onLock()
+	function TycoonBaseComponent:onLock()
 	end
-	function TycoonBaseItem:onUnlock()
+	function TycoonBaseComponent:onUnlock()
 	end
-	function TycoonBaseItem:onDestroy()
+	function TycoonBaseComponent:onDestroy()
 	end
-	function TycoonBaseItem:GetInstance()
+	function TycoonBaseComponent:GetInstance()
 		return self.instance
 	end
-	function TycoonBaseItem:patchData(newData)
+	function TycoonBaseComponent:patchData(newData)
 		local _fn = self.coommunication
 		local _object = {}
 		for _k, _v in self:GetData() do
@@ -89,12 +89,12 @@ do
 		end
 		_fn.setDataCallback(_object)
 	end
-	function TycoonBaseItem:GetData()
+	function TycoonBaseComponent:GetData()
 		local _items = self.tycoon:GetData().Items
 		local _id = self.id
 		return _items[_id]
 	end
-	function TycoonBaseItem:generateData()
+	function TycoonBaseComponent:generateData()
 		local _object = {
 			Locked = self.defaultLocked,
 		}
@@ -106,24 +106,24 @@ do
 		end
 		return _object
 	end
-	function TycoonBaseItem:GetId()
+	function TycoonBaseComponent:GetId()
 		return self.id
 	end
-	function TycoonBaseItem:Lock()
+	function TycoonBaseComponent:Lock()
 		self:patchData({
 			Locked = true,
 		})
 		self.instance.Parent = self.itemStorage
 		self:onLock()
 	end
-	function TycoonBaseItem:Unlock()
+	function TycoonBaseComponent:Unlock()
 		self:patchData({
 			Locked = false,
 		})
 		self.instance.Parent = self.defaultParent
 		self:onUnlock()
 	end
-	function TycoonBaseItem:Start()
+	function TycoonBaseComponent:Start()
 		local _ = not self:GetData() and self.coommunication.setDataCallback(self:generateData())
 		if self:GetData().Locked then
 			self:Lock()
@@ -131,7 +131,7 @@ do
 			self:Unlock()
 		end
 		self.tycoon.OnRecreateData:Connect(function()
-			self.coommunication.setDataCallback(self:generateData())
+			local _1 = not self:GetData() and self.coommunication.setDataCallback(self:generateData())
 			if self:GetData().Locked then
 				self:Lock()
 			else
@@ -142,12 +142,12 @@ do
 			return self:onDestroy()
 		end)
 	end
-	TycoonBaseItem = TycoonComponent(BASE_COMPONENT_TAG)(TycoonBaseItem) or TycoonBaseItem
+	TycoonBaseComponent = TycoonComponent(BASE_COMPONENT_TAG)(TycoonBaseComponent) or TycoonBaseComponent
 end
 return {
 	TycoonComponent = TycoonComponent,
 	TycoonComponents = TycoonComponents,
 	TycoonComponentsByTag = TycoonComponentsByTag,
-	TycoonItemCommunication = TycoonItemCommunication,
-	TycoonBaseItem = TycoonBaseItem,
+	TycoonComponentCommunication = TycoonComponentCommunication,
+	TycoonBaseComponent = TycoonBaseComponent,
 }

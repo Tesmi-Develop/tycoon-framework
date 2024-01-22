@@ -1,15 +1,15 @@
 export interface ITycoonData extends ITycoonReadolyData {
-	Items: Map<string, IItemData>;
+	Items: Map<string, IComponentData>;
 }
 
-export interface IItemData {
+export interface IComponentData {
 	Locked: boolean;
 }
 
 export interface ITycoonReadolyData {
-	Items: ReadonlyMap<string, IItemData>;
+	Items: ReadonlyMap<string, IComponentData>;
 }
 
 export type Constructor<T = object> = new (...args: never[]) => T;
 export type AttrubuteValues = ExtractKeys<CheckableTypes, AttributeValue>;
-export type ItemId = string;
+export type ComponentId = string;
