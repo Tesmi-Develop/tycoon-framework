@@ -38,7 +38,6 @@
     "@rbxts/beacon": "^2.1.1",
     "@rbxts/immut": "^0.4.4-ts.0",
     "@rbxts/maid": "^1.1.0",
-    "@rbxts/profileservice": "^1.4.2",
     "@rbxts/services": "^1.5.1"
   }
 }
